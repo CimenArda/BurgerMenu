@@ -19,7 +19,49 @@ namespace ProjectBurgerMenu.Controllers
             return PartialView();
         }
 
+        public PartialViewResult PartialNavbar()
+        {
+            return PartialView();
+        }
 
+        public PartialViewResult PartialBanner()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult PartialAbout()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult PartialTodaysOffer()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult PartialMenu()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult PartialGallery()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult PartialContact()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult PartialFooter()
+        {
+            return PartialView();
+        }
+        public PartialViewResult PartialScript()
+        {
+            return PartialView();
+        }
 
     }
 }
