@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ProjectBurgerMenu.Context;
+using ProjectBurgerMenu.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +10,7 @@ namespace ProjectBurgerMenu.Controllers
 {
     public class DefaultController : Controller
     {
+        BurgerMenuContext context = new BurgerMenuContext();
         // GET: Default
         public ActionResult Index()
         {
@@ -36,15 +39,23 @@ namespace ProjectBurgerMenu.Controllers
 
         public PartialViewResult PartialTodaysOffer()
         {
-            return PartialView();
+            var values = context.Products.Where(x=>x.DealOfTheDay==true).ToList();
+            return PartialView(values);
         }
 
         public PartialViewResult PartialMenu()
         {
-            return PartialView();
+            var values = context.Products.ToList();
+            return PartialView(values);
         }
+		public PartialViewResult PartialMenuCategory()
+		{
+            var values = context.Categories.Take(6).ToList();
+			return PartialView(values);
+		}
 
-        public PartialViewResult PartialGallery()
+
+		public PartialViewResult PartialGallery()
         {
             return PartialView();
         }
@@ -63,5 +74,19 @@ namespace ProjectBurgerMenu.Controllers
             return PartialView();
         }
 
-    }
+        [HttpGet]
+		public PartialViewResult PartialReservation()
+		{
+			
+			return PartialView();
+		}
+		[HttpPost]
+		public PartialViewResult PartialReservation(Reservation reservation)
+		{
+            reservation.ReservationStatus = "Onay Bekleniyor";
+            context.Reservations.Add(reservation);
+            context.SaveChanges();
+			return PartialView();
+		}
+	}
 }
