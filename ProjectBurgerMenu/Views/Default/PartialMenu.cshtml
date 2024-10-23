@@ -1,7 +1,7 @@
 ﻿@model List<ProjectBurgerMenu.Entities.Product>
-    @{ 
-        int count = 0;
-    }
+@{
+    int count = 0;
+}
 <section class="site-section" id="section-menu">
     <div class="container">
         <div class="row">
@@ -16,7 +16,7 @@
 
             <div class="col-md-12 text-center">
 
-                 @Html.Action("PartialMenuCategory","Default")
+                @Html.Action("PartialMenuCategory", "Default")
 
                 <div class="tab-content text-left">
                     <div class="tab-pane fade show active" id="pills-breakfast" role="tabpanel" aria-labelledby="pills-breakfast-tab">
@@ -62,8 +62,8 @@
                             }
                         </div>
                     </div>
-                    
-                    
+
+
                 </div>
 
             </div>

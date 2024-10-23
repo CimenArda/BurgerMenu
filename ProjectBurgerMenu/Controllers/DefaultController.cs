@@ -29,12 +29,14 @@ namespace ProjectBurgerMenu.Controllers
 
         public PartialViewResult PartialBanner()
         {
-            return PartialView();
+            var values = context.Banners.ToList();
+            return PartialView(values);
         }
 
         public PartialViewResult PartialAbout()
         {
-            return PartialView();
+            var values = context.AboutUss.ToList();
+            return PartialView(values);
         }
 
         public PartialViewResult PartialTodaysOffer()
@@ -53,21 +55,54 @@ namespace ProjectBurgerMenu.Controllers
             var values = context.Categories.Take(6).ToList();
 			return PartialView(values);
 		}
+      
 
-
-		public PartialViewResult PartialGallery()
+        public PartialViewResult PartialGallery()
         {
-            return PartialView();
+            var values = context.Galleries.ToList();
+            return PartialView(values);
         }
 
+        [HttpGet]
         public PartialViewResult PartialContact()
         {
             return PartialView();
         }
 
+        [HttpPost]
+        public ActionResult PartialContact(ContactUs contactUs)
+        {
+            if (ModelState.IsValid)
+            {
+                context.ContactUss.Add(contactUs);
+                context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return PartialView();
+        }
+
+
+        public PartialViewResult PartialContactAddress()
+        {
+            var values = context.Addresses.ToList();
+            return PartialView(values);
+        }
+
         public PartialViewResult PartialFooter()
         {
             return PartialView();
+        }
+        public ActionResult Subscribe(Subscribe subscribe)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Subscribes.Add(subscribe);
+                context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Page404","ErrorPage");
         }
         public PartialViewResult PartialScript()
         {

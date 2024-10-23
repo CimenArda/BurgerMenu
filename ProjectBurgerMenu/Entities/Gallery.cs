@@ -10,5 +10,6 @@ namespace ProjectBurgerMenu.Entities
         public int GalleryId { get; set; }
 
         public string ImageUrl { get; set; }
+        public string ImageUrl2 { get; set; }
     }
 }

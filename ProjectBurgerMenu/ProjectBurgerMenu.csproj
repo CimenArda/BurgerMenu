@@ -195,6 +195,10 @@
     <Compile Include="Migrations\202410231138457_adEntity_subscribe.designer.cs">
       <DependentUpon>202410231138457_adEntity_subscribe.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202410231152112_adddproperty_gallery.cs" />
+    <Compile Include="Migrations\202410231152112_adddproperty_gallery.designer.cs">
+      <DependentUpon>202410231152112_adddproperty_gallery.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1759,6 +1763,8 @@
     <Content Include="Views\Default\PartialScript.cshtml" />
     <Content Include="Views\Default\PartialMenuCategory.cshtml" />
     <Content Include="Views\Default\PartialReservation.cshtml" />
+    <Content Include="Views\Default\PartialContactAddress.cshtml" />
+    <Content Include="Views\Default\_ProductListPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1827,6 +1833,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202410231138457_adEntity_subscribe.resx">
       <DependentUpon>202410231138457_adEntity_subscribe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410231152112_adddproperty_gallery.resx">
+      <DependentUpon>202410231152112_adddproperty_gallery.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

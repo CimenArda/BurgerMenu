@@ -1,18 +1,25 @@
-﻿<section class="site-section" id="section-about">
+﻿@model List<ProjectBurgerMenu.Entities.AboutUs>
+
+<section class="site-section" id="section-about">
     <div class="container">
         <div class="row">
-            <div class="col-md-5 site-animate mb-5">
-                <h4 class="site-sub-title">Bizim Hikayemiz</h4>
-                <h2 class="site-primary-title display-4">Hoşgeldiniz</h2>
-                <p>Çok uzakta, dağların arkasında, Vokalia ve Consonantia ülkelerinden çok uzakta, kör metinler yaşıyor.</p>
+            @foreach (var item in Model)
+            {
 
-                <p class="mb-4">Düden adında küçük bir nehir onların yanından akıyor ve ona gerekli regelia'yı sağlıyor. Cümlelerin kavrulmuş kısımlarının ağzınıza uçtuğu cennet gibi bir ülkedir burası..</p>
-                <p><a href="#" class="btn btn-secondary btn-lg">Bizim Hakkımızda Daha Fazla Öğren</a></p>
-            </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-6 site-animate img" data-animate-effect="fadeInRight">
-                <img src="~/eatwell-master/images/about_img_1.jpg" alt="Free Template by colorlib.com" class="img-fluid">
-            </div>
+                <div class="col-md-5 site-animate mb-5">
+
+
+                    <h4 class="site-sub-title">Bizim Hikayemiz</h4>
+                    <h2 class="site-primary-title display-4">@item.Title</h2>
+                    <p>@item.Description</p>
+                    <p><a href="#" class="btn btn-secondary btn-lg">Bizim Hakkımızda Daha Fazla Öğren</a></p>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-6 site-animate img" data-animate-effect="fadeInRight">
+                    <img src="@item.ImageUrl" alt="Free Template by colorlib.com" class="img-fluid">
+                </div>
+            }
         </div>
+
     </div>
 </section>
