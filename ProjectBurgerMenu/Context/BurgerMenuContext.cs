@@ -16,6 +16,12 @@ namespace ProjectBurgerMenu.Context
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<Banner> Banners { get; set; }
+        public DbSet<AboutUs> AboutUss { get; set; }
+        public DbSet<Gallery> Galleries { get; set; }
+        public DbSet<ContactUs> ContactUss { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Subscribe> Subscribes { get; set; }
 
 
     }
