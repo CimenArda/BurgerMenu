@@ -1724,6 +1724,7 @@
     <Content Include="Areas\Admin\Views\Message\Inbox.cshtml" />
     <Content Include="Areas\Admin\Views\Message\SendBox.cshtml" />
     <Content Include="Areas\Admin\Views\Message\NewMessage.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminLayout\PartialModalReservation.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
