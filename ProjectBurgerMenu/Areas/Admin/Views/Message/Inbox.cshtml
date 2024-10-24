@@ -3,46 +3,150 @@
     ViewBag.Title = "Inbox";
     Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
 
- 
+
 }
 
-<div class="col-lg-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Mesaj Listesi</h4>
-            <p class="card-description">
-                Mesaj İşlemleri <code>Bu Alanda Yapılır</code>
-            </p>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Mesaj Numarası</th>
-                            <th>Gönderici</th>
-                            <th>Konu</th>
-                            <th>Tarih</th>
-                            <th>Mesajı Aç</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mesaj Numarası</th>
+                <th>Gönderen</th>
+                <th>Alıcı</th>
+                <th>Konu</th>
+                <th>Tarih</th>
+                <th>Okundu Durumu</th>
+                <th>Mesajı Aç</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string rowClass = ""; 
+
+                if (item.Title == "Güncelleme")
+                {
+                    rowClass = "table-success"; 
+                }
+                else if (item.Title == "Acil")
+                {
+                    rowClass = "table-danger"; 
+                }
+                else if (item.Title == "Duyuru")
+                {
+                    rowClass = "table-primary"; 
+                }
+                else if (item.Title == "Destek")
+                {
+                    rowClass = "table-warning"; 
+                }
+                else if (item.Title == "Hatırlatma")
+                {
+                    rowClass = "table-dark"; 
+                }
+
+                <tr data-id="@item.MessageID" >
+                    <td>@item.MessageID</td>
+                    <td>@item.SenderEmail</td>
+                    <td>@item.ReceiverEmail</td>
+                    <td class="@rowClass">@item.Title</td>
+                    <td>@item.SendDate.ToShortDateString()</td>
+                    <td class="isReadStatus">@(item.IsRead ? "Okundu" : "Okunmadı")</td>
+                    <td>
+                        <button class="btn btn-outline-warning" onclick="openMessageModal(@item.MessageID)">Mesajı Aç</button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
 
 
-                            <tr>
-                                <td>@item.MessageID</td>
-                                <td>@item.SenderEmail</td>
-                                <td>@item.Title</td>
-                                <td>@item.SendDate.ToShortDateString()</td>
-                                <td><a href="#" class="btn btn-outline-warning">Mesajı Aç</a></td>
-                           
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                <a href="#" class="btn btn-primary">Yeni Mesaj Girişi</a>
+    </table>
+    <a href="/Admin/Message/NewMessage" class="btn btn-primary">Yeni Mesaj Girişi</a>
+</div>
+
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Mesaj Detayları</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Gönderen:</strong> <span id="messageSender"></span></p>
+                <p><strong>Alıcı:</strong> <span id="messageReceiver"></span></p>
+                <p><strong>Konu:</strong> <span id="messageTitle"></span></p>
+                <p><strong>İçerik:</strong> <span id="messageContent"></span></p>
+                <p><strong>Tarih:</strong> <span id="messageDate"></span></p>
+                <p><strong>Okundu Durumu:</strong> <span id="messageIsRead"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>
 </div>
+
+@*modal ve okundu değeri için*@
+<script>
+    function openMessageModal(messageID) {
+        // İlk olarak IsRead alanını güncelle
+        $.ajax({
+            url: '/Message/MarkAsRead', // MarkAsRead aksiyonuna istek gönderiyoruz
+            type: 'POST',
+            data: { id: messageID },
+            success: function () {
+                // Başarılı olursa mesaj detaylarını getiriyoruz
+                $.ajax({
+                    url: '/Message/GetMessageDetails',
+                    type: 'GET',
+                    data: { id: messageID },
+                    success: function (response) {
+                        if (response.success) {
+                            var message = response.data;
+
+                            // Modal'daki alanlara mesaj verilerini yerleştir
+                            document.getElementById('messageSender').innerText = message.SenderEmail;
+                            document.getElementById('messageReceiver').innerText = message.ReceiverEmail;
+                            document.getElementById('messageTitle').innerText = message.Title;
+                            document.getElementById('messageContent').innerText = message.Content;
+                            document.getElementById('messageDate').innerText = message.SendDate;
+                            document.getElementById('messageIsRead').innerText = message.IsRead ? "Okundu" : "Okunmadı";
+
+                            // Modal'ı aç
+                            $('#messageModal').modal('show');
+
+                            // Sayfadaki tabloyu güncelle (gerekirse)
+                            updateIsReadStatus(messageID);
+                        } else {
+                            alert('Mesaj bulunamadı.');
+                        }
+                    },
+                    error: function () {
+                        alert('Mesaj detayı yüklenirken bir hata oluştu.');
+                    }
+                });
+            },
+            error: function () {
+                alert('Mesajın okunma durumu güncellenirken bir hata oluştu.');
+            }
+        });
+    }
+
+    // Eğer tabloda "IsRead" durumunu anlık güncellemek istersen
+    function updateIsReadStatus(messageID) {
+        var row = document.querySelector(`tr[data-id="${messageID}"]`);
+        if (row) {
+            row.querySelector('.isReadStatus').innerText = "Okundu";
+        }
+    }
+</script>
+
+
+
+
+
 

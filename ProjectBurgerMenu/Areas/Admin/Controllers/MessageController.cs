@@ -36,6 +36,50 @@ namespace ProjectBurgerMenu.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpGet]
+        public JsonResult GetMessageDetails(int id)
+        {
+            var message = context.Messages.FirstOrDefault(m => m.MessageID == id);
+
+            if (message == null)
+            {
+                // Eğer mesaj bulunamazsa 404 sayfasına yönlendir
+                return Json(new { success = false, message = "Mesaj bulunamadı." }, JsonRequestBehavior.AllowGet);
+            }
+
+            // Mesaj detaylarını JSON olarak geri döndür
+            var messageDetails = new
+            {
+                SenderEmail = message.SenderEmail,
+                ReceiverEmail = message.ReceiverEmail,
+                Title = message.Title,
+                Content = message.Content,
+                SendDate = message.SendDate.ToString("dd/MM/yyyy"),
+                IsRead = message.IsRead
+            };
+
+            return Json(new { success = true, data = messageDetails }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult MarkAsRead(int id)
+        {
+            var message = context.Messages.FirstOrDefault(m => m.MessageID == id);
+
+            if (message == null)
+            {
+                return Json(new { success = false, message = "Mesaj bulunamadı." }, JsonRequestBehavior.AllowGet);
+            }
+
+            // IsRead alanını true olarak ayarlıyoruz
+            message.IsRead = true;
+            context.SaveChanges();
+
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
 
         [HttpPost]
         public ActionResult NewMessage(Message message)
