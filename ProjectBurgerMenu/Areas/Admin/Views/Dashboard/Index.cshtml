@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+@model List<ProjectBurgerMenu.Entities.Product>
+<div class="row">
+    <div class="row mt-3">
+        <div class="col-xl-4 flex-column d-flex grid-margin stretch-card">
+            <div class="row flex-grow">
+                <div class="col-sm-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Admin</h4>
+                            <h4 class="text-dark font-weight-bold mb-2">@ViewBag.UserName</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Okunmayan Acil Mesaj Sayısı</h4>
+                            <h4 class="text-dark font-weight-bold mb-2">@ViewBag.UnreadEmergencyMessageCount</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.Action("PartialCategory", "Dashboard", "Admin")
+        @Html.Action("PartialSubscriber", "Dashboard", "Admin")
+    
+
+
+    </div>
+    <div class="col-xl-12 grid-margin-lg-0 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Top Sellers</h4>
+                <div class="table-responsive mt-3">
+                    <table class="table table-header-bg">
+                        <thead>
+                            <tr>
+                        <th>#</th>
+                       <th>Ürün Adı</th>
+                       <th>Ürün Fiyatı</th>
+                       <th>Ürün Kategorisi</th>
+                       <th>Günün Ürünü Mü?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+
+
+                           <tr>
+                               <td>@item.ProductId</td>
+                               <td>@item.ProductName</td>
+                               <td>@item.Price</td>
+                               <td>@item.Category.CategoryName</td>
+                               @if (item.DealOfTheDay == true)
+                               {
+                                   <td>Evet</td>
+                               }
+                               else
+                               {
+                                   <td>Hayır</td>
+
+                               }
+
+
+
+                           </tr>
+                            }
+                         
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+       
+            
+       
+        
