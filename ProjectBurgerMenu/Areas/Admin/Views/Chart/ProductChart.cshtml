@@ -1,0 +1,52 @@
+﻿@model List<ProjectBurgerMenu.Entities.Product>
+
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+</style>
+
+<h2>Ürünler Bar Chart</h2>
+
+
+<script>
+    window.onload = function () {
+        var productName = [];
+        var productValue = [];
+
+        @* Razor döngüsü ile ürün isimlerini ve ilgili sayısal değerleri (örneğin fiyat veya stok) dolduruyoruz *@
+        @foreach (var product in Model)
+        {
+            @:productName.push("@product.ProductName");
+            @:productValue.push(@product.Price);  // Burada fiyat ya da istediğin başka bir sayısal veri
+        }
+
+        var ctx = document.getElementById('productChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',  // Bar chart olarak belirledik
+            data: {
+                labels: productName,  // Ürün isimleri burada yer alacak
+                datasets: [{
+                    label: 'Ürün Fiyatları',  // Grafiğin etiketi
+                    data: productValue,  // Ürün fiyatları veya başka sayısal veri burada
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',  // Çubukların rengi
+                    borderColor: 'rgba(54, 162, 235, 1)',  // Çubukların sınır rengi
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true  // Y ekseni sıfırdan başlasın
+                    }
+                }
+            }
+        });
+    };
+</script>
+
+<div class="chart-container" style="width: 50%; max-width: 400px; margin-left: 50px;">
+    <canvas id="productChart" width="400" height="400"></canvas>
+</div>

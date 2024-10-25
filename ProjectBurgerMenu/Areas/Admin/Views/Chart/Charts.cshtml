@@ -1,0 +1,8 @@
+﻿
+@{
+    ViewBag.Title = "Charts";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+@Html.Action("CategoryChart", "Chart", new { area = "Admin" })
+@Html.Action("ProductChart", "Chart", new { area = "Admin" })

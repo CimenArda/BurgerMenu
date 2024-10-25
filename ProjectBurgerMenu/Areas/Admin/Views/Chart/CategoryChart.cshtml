@@ -1,0 +1,82 @@
+﻿
+@model List<ProjectBurgerMenu.Entities.Category>
+
+<style>
+    #chartdiv {
+        width: 100%;
+        height: 500px;
+    }
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+<script>
+    window.onload = function () {
+        var categoryName = [];
+        var categoryId = [];
+
+        @* Razor döngüsü ile kategori isimlerini ve id'lerini dolduruyoruz *@
+        @foreach (var category in Model)
+        {
+            @:categoryName.push("@category.CategoryName");
+            @:categoryId.push("@category.CategoryId");
+        }
+
+        var ctx = document.getElementById('categoryChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: categoryName,  // Kategori isimleri burada yer alacak
+                datasets: [{
+                    label: 'Kategori Numarası',
+                    data: categoryId,   // Kategori ID'leri burada sayısal veri olarak kullanılacak
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',  // Kırmızı
+                        'rgba(54, 162, 235, 0.7)',  // Mavi
+                        'rgba(255, 206, 86, 0.7)',   // Sarı
+                        'rgba(75, 192, 192, 0.7)',   // Yeşil
+                        'rgba(153, 102, 255, 0.7)',  // Mor
+                        'rgba(255, 159, 64, 0.7)'    // Turuncu
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',    // Kırmızı
+                        'rgba(54, 162, 235, 1)',    // Mavi
+                        'rgba(255, 206, 86, 1)',     // Sarı
+                        'rgba(75, 192, 192, 1)',     // Yeşil
+                        'rgba(153, 102, 255, 1)',    // Mor
+                        'rgba(255, 159, 64, 1)'      // Turuncu
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Kategori Numara-Ad Grafiği'
+                },
+                plugins: {
+                    datalabels: {
+                        color: '#fff', // Yazı rengi
+                        formatter: (value, ctx) => {
+                            return value + '%';  // Değeri yüzdelik gösteriyoruz
+                        },
+                        font: {
+                            weight: 'bold', // Yazı kalınlığı
+                            size: 14, // Yazı boyutu
+                        },
+                    }
+                }
+            }
+        });
+    };
+</script>
+
+<div style="display: flex; justify-content: flex-start; margin-left: 50px;">
+    <div class="chart-container" style="width: 100%; max-width: 400px;">
+        <canvas id="categoryChart" width="400" height="400"></canvas>
+    </div>
+</div>
+

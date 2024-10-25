@@ -52,10 +52,21 @@ namespace ProjectBurgerMenu.Controllers
         }
 		public PartialViewResult PartialMenuCategory()
 		{
-            var values = context.Categories.Take(6).ToList();
+            var values = context.Categories.ToList();
 			return PartialView(values);
 		}
-      
+        public ActionResult GetProductsByCategory(int categoryId)
+        {
+            var products = context.Products
+                .Where(p => p.CategoryId == categoryId)
+                .ToList();
+
+            return PartialView("_ProductList", products);
+        }
+        public PartialViewResult _ProductList()
+        {
+            return PartialView();
+        }
 
         public PartialViewResult PartialGallery()
         {
@@ -91,10 +102,19 @@ namespace ProjectBurgerMenu.Controllers
 
         public PartialViewResult PartialFooter()
         {
+            var about = context.AboutUss.Select(x => x.Description.Substring(0, 275)).FirstOrDefault();
+            ViewBag.about =about;
             return PartialView();
         }
         public ActionResult Subscribe(Subscribe subscribe)
         {
+            if (subscribe == null)
+            {
+                // Null değer kontrolü yap ve bir alert mesajı oluştur
+                TempData["SubscribeError"] = "Lütfen geçerli bir bilgi girin.";
+                return RedirectToAction("Index");
+            }
+
             if (ModelState.IsValid)
             {
                 context.Subscribes.Add(subscribe);
@@ -102,8 +122,10 @@ namespace ProjectBurgerMenu.Controllers
 
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Page404","ErrorPage");
+
+            return RedirectToAction("Page404", "ErrorPage");
         }
+
         public PartialViewResult PartialScript()
         {
             return PartialView();

@@ -1,12 +1,63 @@
-﻿
-@model List<ProjectBurgerMenu.Entities.Category>
-<ul class="nav site-tab-nav nav-pills mb-5" id="pills-tab" role="tablist">
-    @foreach (var item in Model)
-    {
+﻿@model List<ProjectBurgerMenu.Entities.Category>
+<script src="/Scripts/jquery-3.4.1.min.js"></script>
 
+<section class="site-section" id="section-menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center mb-5 site-animate">
+                <h2 class="display-4">Lezzetli Menülerimiz</h2>
+                <div class="row justify-content-center">
+                    <div class="col-md-7">
+                        <p class="lead">
+                            Lezzetli ve doyurucu menülerimizle tanışın! Tüm ürünlerimiz özenle seçilen taze malzemelerle hazırlanmakta ve sizlere en iyi gastronomi deneyimini sunmayı hedeflemektedir. İster klasik tatları, ister yenilikçi lezzetleri tercih edin, her damak tadına uygun enfes seçeneklerimizle sizleri bekliyoruz. Afiyetle keyfini çıkarın!
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-        <li class="nav-item site-animate">
-            <a class="nav-link active" id="pills-breakfast-tab" data-toggle="pill" href="#pills-breakfast" role="tab" aria-controls="pills-breakfast" aria-selected="true">@item.CategoryName</a>
-        </li>
-    }
-</ul>
+            <div class="col-md-12 text-center">
+
+                <!-- Kategoriler sabitlenecek ve sayfa kaymasını engelleyecek -->
+                <ul class="nav site-tab-nav nav-pills mb-5" id="pills-tab" role="tablist" style="position: sticky; top: 0; z-index: 1000; background-color: white;">
+                    @foreach (var category in Model)
+                    {
+                        <li class="nav-item site-animate">
+                            <a href="#" class="category-btn nav-link" data-id="@category.CategoryId">@category.CategoryName</a>
+                            <div id="products-@category.CategoryId" class="product-list" style="display:none;"></div>
+                        </li>
+                    }
+                </ul>
+
+            </div>
+            </div>
+            <div class="row" id="product-container">
+                <!-- Ürünlerin gösterileceği yer -->
+            </div>
+        </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $('.category-btn').click(function (e) {
+            e.preventDefault(); // Sayfanın kaymasını engellemek için
+
+            var categoryId = $(this).data('id');
+            var productListDiv = $('#products-' + categoryId);
+
+            // Ürünleri aşağı doğru açmak ve kapatmak için toggle fonksiyonu
+            productListDiv.slideToggle();
+
+            if (!productListDiv.hasClass('loaded')) {
+                $.ajax({
+                    url: '@Url.Action("GetProductsByCategory", "Default")',
+                    type: 'GET',
+                    data: { categoryId: categoryId },
+                    success: function (data) {
+                        // Verileri div'e ekle ve ürünler ilk defa yüklendiğinde görünür hale getir
+                        productListDiv.html(data).addClass('loaded');
+                    }
+                });
+            }
+        });
+    });
+</script>

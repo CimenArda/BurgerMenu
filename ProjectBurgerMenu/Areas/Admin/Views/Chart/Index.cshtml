@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+@{
+    ViewBag.Title = "Charts";
+}
+<style>
+    /* Tüm chartların boyutlarını küçültelim */
+    canvas {
+        width: 500px !important;
+        height: 500px !important;
+    }
+</style>
+
+<script src="/Scripts/jquery-3.4.1.min.js"></script>
+<div class="container">
+    <!-- İlk Satır: 2 Chart Yan Yana -->
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Category Chart</h3>
+            <canvas id="categoryChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h3>Product Chart</h3>
+            <canvas id="productChart"></canvas>
+        </div>
+    </div>
+
+    <!-- İkinci Satır: 2 Chart Yan Yana -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h3>Reservation Status Chart</h3>
+            <canvas id="reservationChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h3>Admin Chart</h3>
+            <canvas id="adminChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Category Chart
+    $.ajax({
+        url: '@Url.Action("CategoryChart", "Chart")',
+        method: 'GET',
+        success: function(data) {
+            var ctx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(x => x.CategoryName),
+                    datasets: [{
+                        label: 'Categories',
+                        data: data.map(x => x.CategoryId),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                }
+            });
+        }
+    });
+
+    // Product Chart
+    $.ajax({
+        url: '@Url.Action("ProductChart", "Chart")',
+        method: 'GET',
+        success: function(data) {
+            var ctx = document.getElementById('productChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.map(x => x.ProductName),
+                    datasets: [{
+                        label: 'Fiyatı TL',
+                        data: data.map(x => x.Price),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ]
+                    }]
+                }
+            });
+        }
+    });
+
+    // Reservation Chart
+    $.ajax({
+        url: '@Url.Action("ReservationChart", "Chart")',
+        method: 'GET',
+        success: function(data) {
+            var ctx = document.getElementById('reservationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(x => x.Status),
+                    datasets: [{
+                        label: 'Reservations',
+                        data: data.map(x => x.Count),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ]
+                    }]
+                }
+            });
+        }
+    });
+
+    // Admin Chart (Doughnut Chart)
+    $.ajax({
+        url: '@Url.Action("AdminChart", "Chart")',
+        method: 'GET',
+        success: function(data) {
+            var ctx = document.getElementById('adminChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: data.map(x => x.UserName),  // Adminlerin Usernameleri
+                    datasets: [{
+                        label: 'Admins',
+                        data: data.map(x => x.AdminId),  // AdminId'leri veri olarak kullanıyoruz
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+    });
+</script>
