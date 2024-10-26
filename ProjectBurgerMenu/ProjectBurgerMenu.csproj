@@ -131,6 +131,7 @@
     <Compile Include="Areas\Admin\Controllers\AdminLayoutController.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ChartController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ContactUsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\MessageController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
@@ -1854,6 +1855,7 @@
     <Content Include="Areas\Admin\Views\Chart\Charts.cshtml" />
     <Content Include="Areas\Admin\Views\Chart\CategoryChart.cshtml" />
     <Content Include="Areas\Admin\Views\Chart\ProductChart.cshtml" />
+    <Content Include="Areas\Admin\Views\ContactUs\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

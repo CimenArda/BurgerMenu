@@ -1,0 +1,88 @@
+﻿@model List<ProjectBurgerMenu.Entities.ContactUs>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+<script src="/Scripts/jquery-3.4.1.min.js"></script>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>İletişim ID</th>
+                <th>İsim</th>
+                <th>Email</th>
+                <th>Konu</th>
+                <th>Mesajı Aç</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr data-id="@item.ContactUsId">
+                    <td>@item.ContactUsId</td>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.Subject</td>
+                    <td>
+                        <button class="btn btn-outline-warning" onclick="openMessageModal(@item.ContactUsId)">Mesajı Aç</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">İletişim Mesajı Detayları</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>İsim:</strong> <span id="messageName"></span></p>
+                <p><strong>Email:</strong> <span id="messageEmail"></span></p>
+                <p><strong>Konu:</strong> <span id="messageSubject"></span></p>
+                <p><strong>Mesaj:</strong> <span id="messageContent"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openMessageModal(contactUsId) {
+        // Mesaj detaylarını almak için AJAX isteği gönderiyoruz
+        $.ajax({
+            url: '/Admin/ContactUs/GetMessageDetails', // Controller'daki GetMessageDetails aksiyonu
+            type: 'GET',
+            data: { id: contactUsId },
+            success: function (response) {
+                if (response.success) {
+                    var contact = response.data;
+
+                    // Modal'daki alanlara mesaj verilerini yerleştir
+                    document.getElementById('messageName').innerText = contact.Name;
+                    document.getElementById('messageEmail').innerText = contact.Email;
+                    document.getElementById('messageSubject').innerText = contact.Subject;
+                    document.getElementById('messageContent').innerText = contact.Content;
+
+                    // Modal'ı aç
+                    $('#messageModal').modal('show');
+                } else {
+                    // Hata durumunda kullanıcıya mesaj göster
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert('Mesaj detayı yüklenirken bir hata oluştu.');
+            }
+        });
+    }
+</script>
